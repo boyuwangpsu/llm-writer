@@ -3,12 +3,12 @@ import shutil
 import subprocess
 import tempfile
 
-from aws_lambda_powertools import Logger
+#from aws_lambda_powertools import Logger
 
 from crawlers.base import BaseCrawler
 from db.documents import RepositoryDocument
 
-logger = Logger(service="llm-writer/crawler")
+#logger = Logger(service="llm-twin-course/crawler")
 
 
 class GithubCrawler(BaseCrawler):
@@ -19,7 +19,7 @@ class GithubCrawler(BaseCrawler):
         self._ignore = ignore
 
     def extract(self, link: str, **kwargs) -> None:
-        logger.info(f"Starting scrapping GitHub repository: {link}")
+       # logger.info(f"Starting scrapping GitHub repository: {link}")
 
         repo_name = link.rstrip("/").split("/")[-1]
 
@@ -54,4 +54,4 @@ class GithubCrawler(BaseCrawler):
         finally:
             shutil.rmtree(local_temp)
 
-        logger.info(f"Finished scrapping GitHub repository: {link}")
+      #  logger.info(f"Finished scrapping GitHub repository: {link}")

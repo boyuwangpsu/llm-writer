@@ -18,7 +18,7 @@ class BaseCrawler(ABC):
 class BaseAbstractCrawler(BaseCrawler, ABC):
     def __init__(self, scroll_limit: int = 5) -> None:
         options = webdriver.ChromeOptions()
-        options.binary_location = "/opt/chrome/chrome"
+        options.binary_location = "/opt/chrome-linux64/chrome"
         options.add_argument("--no-sandbox")
         options.add_argument("--headless")
         options.add_argument("--single-process")
@@ -35,7 +35,8 @@ class BaseAbstractCrawler(BaseCrawler, ABC):
         options.add_argument("--remote-debugging-port=9222")
         self.set_extra_driver_options(options)
         self.scroll_limit = scroll_limit
-        self.driver = webdriver.Chrome(service=webdriver.ChromeService("/opt/chromedriver"),options=options)
+        self.driver = webdriver.Chrome(service=webdriver.ChromeService("/opt/chromedriver-linux64/chromedriver"),options=options)
+        #self.driver = webdriver.Chrome(service=webdriver.ChromeService("/usr/local/bin/chromedriver"),options=options)
 
     def set_extra_driver_options(self, options: Options) -> None:
         pass

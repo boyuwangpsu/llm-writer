@@ -1,11 +1,11 @@
-from aws_lambda_powertools import Logger
+#from aws_lambda_powertools import Logger
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 
 from crawlers.base import BaseAbstractCrawler
 from db.documents import ArticleDocument
 
-logger = Logger(service="llm-writer/crawler")
+#logger = Logger(service="decodingml/crawler")
 
 
 class MediumCrawler(BaseAbstractCrawler):
@@ -15,7 +15,7 @@ class MediumCrawler(BaseAbstractCrawler):
         options.add_argument(r"--profile-directory=Profile 2")
 
     def extract(self, link: str, **kwargs) -> None:
-        logger.info(f"Starting scrapping Medium article: {link}")
+       # logger.info(f"Starting scrapping Medium article: {link}")
         print(f"Starting scrapping Medium article: {link}")
         self.driver.get(link)
         self.scroll_page()
@@ -30,7 +30,7 @@ class MediumCrawler(BaseAbstractCrawler):
             "Content": soup.get_text(),
         }
 
-        logger.info(f"Successfully scraped and saved article: {link}")
+      #  logger.info(f"Successfully scraped and saved article: {link}")
         self.driver.close()
         instance = self.model(
             platform="medium", content=data, link=link, author_id=kwargs.get("user")

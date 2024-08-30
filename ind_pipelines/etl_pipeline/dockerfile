@@ -1,0 +1,61 @@
+# Use the official Python 3.11 image as the base image
+FROM python:3.11-slim as base
+
+# Install chrome driver and browser
+RUN apt-get update && apt-get install -y unzip wget curl && \
+    wget -O "/tmp/chromedriver.zip" "https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.126/linux64/chromedriver-linux64.zip" && \
+    wget -O "/tmp/chrome-linux.zip" "https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.126/linux64/chrome-linux64.zip" && \
+    unzip /tmp/chromedriver.zip -d /opt/ && \
+    unzip /tmp/chrome-linux.zip -d /opt/ && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+
+# Install the function's OS dependencies using yum
+RUN apt-get update && apt-get install -y \
+    libatk-bridge2.0-0 \
+    wget \
+    git \
+    libcups2 \
+    libgtk-3-0 \
+    libxcomposite1 \
+    libasound2 \
+    libx11-xcb1 \
+    libxcursor1 \
+    libxdamage1 \
+    libxext6 \
+    libxi6 \
+    libxrandr2 \
+    libxss1 \
+    libxtst6 \
+    libpangocairo-1.0-0 \
+    at-spi2-core \
+    libxt6 \
+    xvfb \
+    xauth \
+    dbus-x11 \
+    libnss3 \
+    libgbm1 \
+    ffmpeg \
+    libssl-dev \
+    libcurl4-openssl-dev \
+    libpq-dev && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+
+COPY ./pyproject.toml ./poetry.lock ./
+
+# Install Poetry, export dependencies to requirements.txt, and install dependencies
+# in the Lambda task directory, finally cleanup manifest files.
+RUN python -m pip install --upgrade pip && pip install poetry
+RUN poetry export -f requirements.txt > requirements.txt && \
+    pip install --no-cache-dir -r requirements.txt  && \
+    rm requirements.txt pyproject.toml poetry.lock
+
+# Copy the application code from the etl_pipeline folder
+COPY . /app/etl_pipeline
+
+# Set the working directory to the application folder
+WORKDIR /app/etl_pipeline
+
+# Command to run the application locally
+CMD ["python", "main.py"]

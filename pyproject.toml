@@ -8,6 +8,13 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 selenium = "4.21.0"
+pymongo = "^4.8.0"
+pydantic = "^2.8.2"
+webdriver-manager = "^4.0.2"
+beautifulsoup4 = "^4.12.3"
+structlog = "^24.4.0"
+pydantic-settings = "^2.4.0"
+aws-lambda-powertools = "^2.43.1"
 
 
 [build-system]
