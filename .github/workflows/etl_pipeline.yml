@@ -3,7 +3,7 @@ name: etl_pipeline
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
